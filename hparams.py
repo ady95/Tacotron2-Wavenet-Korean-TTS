@@ -77,7 +77,7 @@ hparams = tf.contrib.training.HParams(
 
 
     # wavenet training hp
-    wavenet_batch_size = 2,            # 16--> OOM. wavenet은 batch_size가 고정되어야 한다.
+    wavenet_batch_size = 8,            # 16--> OOM. wavenet은 batch_size가 고정되어야 한다.
     store_metadata = False,
     num_steps = 1000000,                # Number of training steps
 

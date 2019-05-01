@@ -1,0 +1,4 @@
+librosa
+jamo
+unidecode
+inflect
