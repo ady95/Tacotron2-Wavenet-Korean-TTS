@@ -15,15 +15,23 @@ from utils.infolog import log
 from utils import parallel_run, remove_file
 from utils.audio import frames_to_hours
 
-
+from pprint import pprint
 
 _pad = 0
 _stop_token_pad = 1
 def get_frame(path):
     data = np.load(path)
+    
+    # ady95 추가
+    if data["tokens"].any() == None:
+        return (path, 0, 0)
+
     n_frame = data["linear"].shape[0]
     n_token = len(data["tokens"])
     return (path, n_frame, n_token)
+
+
+    
 
 def get_path_dict(data_dirs, hparams, config,data_type, n_test=None,rng=np.random.RandomState(123)):
 
@@ -36,7 +44,11 @@ def get_path_dict(data_dirs, hparams, config,data_type, n_test=None,rng=np.rando
             rng.shuffle(paths)  # ['datasets/moon\\data\\012.0287.npz', 'datasets/moon\\data\\004.0215.npz', 'datasets/moon\\data\\003.0149.npz', ...]
 
         if not config.skip_path_filter:
-            items = parallel_run( get_frame, paths, desc="filter_by_min_max_frame_batch", parallel=True)  # [('datasets/moon\\data\\012.0287.npz', 130, 21), ('datasets/moon\\data\\003.0149.npz', 209, 37), ...]
+            # items = parallel_run( get_frame, paths, desc="filter_by_min_max_frame_batch", parallel=True)  # [('datasets/moon\\data\\012.0287.npz', 130, 21), ('datasets/moon\\data\\003.0149.npz', 209, 37), ...]
+            items = []
+            for path in paths:
+                item = get_frame(path)
+                items.append(item)
 
             min_n_frame = hparams.min_n_frame   # 5*30
             max_n_frame =  hparams.max_n_frame - 1  # 5*200 - 5
@@ -346,7 +358,8 @@ if __name__ == '__main__':
     
     
     coord = tf.train.Coordinator()
-    data_dirs=['D:\\hccho\\Tacotron-Wavenet-Vocoder-hccho\\data\\moon']
+    # data_dirs=['D:\\hccho\\Tacotron-Wavenet-Vocoder-hccho\\data\\moon']
+    data_dirs=[r'D:\GIT\Tacotron2-Wavenet-Korean-TTS\data\mv01']
     mydatafeed =  DataFeederTacotron2(coord, data_dirs, hparams, config, 32,data_type='train', batch_size=config.batch_size)
 
     
