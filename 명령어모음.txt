@@ -3,6 +3,10 @@
 
 python preprocess.py --num_workers 8 --name moon --in_dir .\datasets\moon --out_dir .\data\moon
 
+python preprocess.py --num_workers 8 --name mv01 --in_dir .\datasets\mv01 --out_dir .\data\mv01
+python preprocess.py --num_workers 8 --name mv05 --in_dir .\datasets\mv05 --out_dir .\data\mv05
+python preprocess.py --num_workers 8 --name mw06 --in_dir .\datasets\mw06 --out_dir .\data\mw06
+python preprocess.py --num_workers 8 --name mw18 --in_dir .\datasets\mw18 --out_dir .\data\mw18
 
 python train_tacotron2.py
 
